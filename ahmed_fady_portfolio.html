@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmed Fady | Professional Web Developer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: '#FAF6F0',
+                        creamDark: '#F2EBE1',
+                        espresso: '#221308',
+                        espressoLight: '#331E0E',
+                        amberGlow: '#F58220',
+                        amberHover: '#D96B0B',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 14s linear infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations & Reveal Effects */
+        body {
+            background-color: #FAF6F0;
+            color: #221308;
+            overflow-x: hidden;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF6F0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #221308;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F58220;
+        }
+
+        /* Glowing Card Effect inspired by reference 2 */
+        .glow-card {
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+        .glow-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -15px rgba(245, 130, 32, 0.3);
+        }
+
+        /* Accordion smooth transition */
+        .service-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            opacity: 0;
+        }
+        .service-item.active .service-content {
+            max-height: 220px;
+            opacity: 1;
+        }
+        .service-item.active {
+            background-color: #221308;
+            color: #FAF6F0;
+        }
+        .service-item.active .service-num {
+            color: #F58220;
+        }
+        .service-item.active .service-arrow {
+            background-color: #F58220;
+            color: #221308;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-amberGlow selection:text-white">
+
+    <!-- Floating Navigation Bar -->
+    <header class="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <nav class="bg-espresso/95 backdrop-blur-md text-cream rounded-full px-6 py-3.5 shadow-2xl border border-amberGlow/20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#home" class="font-display font-extrabold text-xl sm:text-2xl tracking-tight flex items-center gap-1">
+                <span>Ahmed</span><span class="text-amberGlow">.</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-cream/80">
+                <li><a href="#home" class="text-amberGlow font-semibold transition">Home</a></li>
+                <li><a href="#services" class="hover:text-amberGlow transition">Services</a></li>
+                <li><a href="#about" class="hover:text-amberGlow transition">About Me</a></li>
+                <li><a href="#packages" class="hover:text-amberGlow transition">Packages</a></li>
+                <li><a href="#standards" class="hover:text-amberGlow transition">Craftsmanship</a></li>
+            </ul>
+
+            <!-- CTA & Mobile Toggle -->
+            <div class="flex items-center gap-3">
+                <a href="#packages" class="bg-cream text-espresso hover:bg-amberGlow hover:text-white font-display font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full transition-all duration-300 flex items-center gap-2 shadow-md">
+                    <span>Let's Talk</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <button id="mobile-menu-btn" aria-label="Toggle Menu" class="md:hidden w-10 h-10 rounded-full bg-espressoLight flex items-center justify-center text-cream hover:text-amberGlow transition">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-2 bg-espresso text-cream rounded-3xl p-6 shadow-2xl border border-amberGlow/20">
+            <ul class="flex flex-col gap-4 text-base font-medium">
+                <li><a href="#home" class="mobile-link text-amberGlow">Home</a></li>
+                <li><a href="#services" class="mobile-link hover:text-amberGlow transition">Services</a></li>
+                <li><a href="#about" class="mobile-link hover:text-amberGlow transition">About Me</a></li>
+                <li><a href="#packages" class="mobile-link hover:text-amberGlow transition">Pricing Packages</a></li>
+                <li><a href="#standards" class="mobile-link hover:text-amberGlow transition">Craftsmanship</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="relative pt-10 pb-20 lg:pt-16 lg:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- Decorative Ambient Glow -->
+        <div class="absolute top-20 right-10 w-72 h-72 bg-amberGlow/15 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+        <div class="absolute bottom-10 left-10 w-80 h-80 bg-amberGlow/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <!-- Left Content -->
+            <div class="lg:col-span-7 space-y-6 reveal active">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-creamDark border border-espresso/10">
+                    <span class="w-2 h-2 rounded-full bg-amberGlow animate-ping"></span>
+                    <span class="text-xs font-bold tracking-widest uppercase text-espresso/80">Professional Web Developer</span>
+                </div>
+
+                <h1 class="font-display font-extrabold text-4xl sm:text-6xl lg:text-[64px] leading-[1.08] tracking-tight text-espresso">
+                    I Build <br>
+                    <span class="text-amberGlow relative inline-block">
+                        Websites
+                        <svg class="absolute -bottom-2 left-0 w-full h-3 text-amberGlow/40" viewBox="0 0 200 12" fill="none">
+                            <path d="M2 10C50 2 150 2 198 10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                    </span> <br>
+                    That Perform.
+                </h1>
+
+                <p class="text-espresso/75 text-base sm:text-lg max-w-xl leading-relaxed">
+                    Hi, I'm <strong class="text-espresso font-semibold">Ahmed Fady</strong>. I craft clean code, modern interfaces, and high-converting web solutions engineered to help businesses scale, stand out, and make a lasting digital impact.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap items-center gap-4 pt-2">
+                    <a href="#packages" class="bg-espresso text-cream hover:bg-amberGlow hover:text-white font-display font-bold text-sm sm:text-base px-7 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-amberGlow/30 flex items-center gap-3">
+                        <span>Explore Packages</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#services" class="bg-transparent border-2 border-espresso/20 hover:border-espresso text-espresso font-display font-bold text-sm sm:text-base px-7 py-4 rounded-full transition-all duration-300 flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full bg-amberGlow/20 text-amberGlow flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-code"></i>
+                        </span>
+                        <span>What I Do</span>
+                    </a>
+                </div>
+
+                <!-- 600+ Clients Proof Bar -->
+                <div class="pt-6 flex flex-wrap items-center gap-4 border-t border-espresso/10">
+                    <div class="flex -space-x-3">
+                        <div class="w-11 h-11 rounded-full bg-espresso text-amberGlow border-2 border-cream flex items-center justify-center font-display font-bold text-xs">AF</div>
+                        <div class="w-11 h-11 rounded-full bg-amberGlow text-white border-2 border-cream flex items-center justify-center font-display font-bold text-xs"><i class="fa-solid fa-star"></i></div>
+                        <div class="w-11 h-11 rounded-full bg-espressoLight text-cream border-2 border-cream flex items-center justify-center font-display font-bold text-xs"><i class="fa-solid fa-check"></i></div>
+                        <div class="w-11 h-11 rounded-full bg-creamDark text-espresso border-2 border-cream flex items-center justify-center font-display font-bold text-xs">+600</div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-display font-extrabold text-lg text-espresso">600+ Clients & Successful Websites</span>
+                            <span class="text-amberGlow text-sm"><i class="fa-solid fa-circle-check"></i></span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-espresso/65 font-medium">Trusted worldwide for speed, reliability & clean architecture</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Visual Showcase (Inspired by Reference 1 & 2) -->
+            <div class="lg:col-span-5 relative reveal reveal-delay-2">
+                <!-- Handwritten Note Annotation -->
+                <div class="hidden sm:block absolute -top-6 -left-8 z-20 -rotate-6 animate-float">
+                    <p class="font-display font-bold text-sm text-espresso bg-cream px-3 py-1 rounded-xl shadow-sm border border-espresso/10">
+                        Design.<br>Develop.<br><span class="text-amberGlow">Deliver.</span>
+                    </p>
+                </div>
+
+                <!-- Rotating Circular Stamp -->
+                <div class="absolute -top-5 -right-3 sm:-right-6 z-20 w-24 h-24 rounded-full bg-espresso text-cream flex items-center justify-center shadow-xl border-4 border-cream">
+                    <svg class="w-20 h-20 animate-spin-slow" viewBox="0 0 100 100">
+                        <defs>
+                            <path id="circlePath" d="M 50, 50 m -36, 0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0" />
+                        </defs>
+                        <text fill="#FAF6F0" font-size="9.5" font-weight="700" letter-spacing="2.2">
+                            <textPath href="#circlePath">CREATIVE • WEB DEVELOPER •</textPath>
+                        </text>
+                    </svg>
+                    <div class="absolute w-8 h-8 rounded-full bg-amberGlow flex items-center justify-center text-espresso text-xs">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                </div>
+
+                <!-- Main Developer Visual Card (Warm Amber & Espresso Aesthetic) -->
+                <div class="relative rounded-[2.5rem] bg-gradient-to-br from-amberGlow via-[#E06D10] to-espresso p-1.5 shadow-2xl">
+                    <div class="rounded-[2.2rem] bg-espresso overflow-hidden relative aspect-[4/4.4] flex flex-col justify-between p-6 sm:p-8 text-cream">
+                        <!-- Abstract Code & Sunburst Backdrop -->
+                        <div class="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_top_right,#F58220,transparent_65%)]"></div>
+                        <div class="absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-amberGlow/25 blur-2xl"></div>
+
+                        <!-- Top Terminal Header -->
+                        <div class="relative z-10 flex items-center justify-between bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/10">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                                <span class="w-3 h-3 rounded-full bg-amberGlow"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                            </div>
+                            <span class="text-xs font-mono text-cream/80">ahmed-fady.dev</span>
+                        </div>
+
+                        <!-- Central Developer Emblem & Live Stats -->
+                        <div class="relative z-10 my-auto py-6 text-center space-y-4">
+                            <div class="w-24 h-24 mx-auto rounded-3xl bg-gradient-to-tr from-amberGlow to-amber-300 p-0.5 shadow-lg shadow-amberGlow/30 animate-float">
+                                <div class="w-full h-full bg-espresso rounded-[22px] flex items-center justify-center">
+                                    <i class="fa-solid fa-laptop-code text-4xl text-amberGlow"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h2 class="font-display font-extrabold text-2xl sm:text-3xl tracking-tight">Ahmed Fady</h2>
+                                <p class="text-amberGlow font-medium text-sm">Full-Stack & Frontend Architect</p>
+                            </div>
+                            <div class="inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl px-4 py-2 text-xs text-cream/90">
+                                <span><strong class="text-amberGlow">99.9%</strong> Uptime</span>
+                                <span class="opacity-30">|</span>
+                                <span><strong class="text-amberGlow">100%</strong> Responsive</span>
+                            </div>
+                        </div>
+
+                        <!-- Floating Skill Pills -->
+                        <div class="relative z-10 flex flex-wrap gap-2 justify-center">
+                            <span class="px-3.5 py-1.5 rounded-full bg-cream text-espresso font-display font-bold text-xs shadow">Frontend</span>
+                            <span class="px-3.5 py-1.5 rounded-full bg-amberGlow text-espresso font-display font-bold text-xs shadow">Backend</span>
+                            <span class="px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-sm text-cream font-display font-semibold text-xs border border-white/15">UI/UX Design</span>
+                            <span class="px-3.5 py-1.5 rounded-full bg-cream text-espresso font-display font-bold text-xs shadow">Web Performance</span>
+                            <span class="px-3.5 py-1.5 rounded-full bg-amberGlow text-espresso font-display font-bold text-xs shadow">Custom Solutions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE RIBBON -->
+    <div class="bg-espresso text-cream py-4 border-y border-amberGlow/20 overflow-hidden select-none">
+        <div class="flex whitespace-nowrap animate-marquee">
+            <div class="flex items-center gap-8 mx-4 font-display font-bold text-base sm:text-lg tracking-wide">
+                <span>Website Design</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>Custom Web Development</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>600+ Successful Websites</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>Responsive Interfaces</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>Speed Optimization</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>Clean & Scalable Code</span>
+                <span class="text-amberGlow text-xl">✦</span>
+            </div>
+            <!-- Duplicate for seamless loop -->
+            <div class="flex items-center gap-8 mx-4 font-display font-bold text-base sm:text-lg tracking-wide" aria-hidden="true">
+                <span>Website Design</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>Custom Web Development</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>600+ Successful Websites</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>Responsive Interfaces</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>Speed Optimization</span>
+                <span class="text-amberGlow text-xl">✦</span>
+                <span>Clean & Scalable Code</span>
+                <span class="text-amberGlow text-xl">✦</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICES SECTION (Interactive Accordion Style from Reference 1) -->
+    <section id="services" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 reveal">
+            <div>
+                <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-espresso/70 mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-espresso"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-amberGlow -ml-1.5"></span>
+                    <span>My Services</span>
+                </div>
+                <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-espresso tracking-tight">
+                    How I Bring <span class="text-amberGlow">Ideas to Life</span>
+                </h2>
+            </div>
+            <a href="#packages" class="self-start md:self-auto bg-amberGlow hover:bg-amberHover text-espresso font-display font-bold text-sm px-6 py-3 rounded-full transition-all duration-300 flex items-center gap-2 shadow-md">
+                <span>View Pricing Plans</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Interactive Services List -->
+        <div class="space-y-4 reveal" id="services-accordion">
+            <!-- Service 01 -->
+            <div class="service-item bg-white rounded-3xl p-6 sm:p-8 border border-espresso/10 cursor-pointer transition-all duration-300 shadow-sm hover:border-amberGlow/50" onclick="toggleService(this)">
+                <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-6 sm:gap-12">
+                        <span class="service-num font-display font-bold text-base sm:text-lg text-espresso/50 transition-colors">01.</span>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl">UI/UX & Modern Interface Design</h3>
+                    </div>
+                    <div class="service-arrow w-10 h-10 rounded-full bg-amberGlow/20 text-amberGlow flex items-center justify-center transition-all duration-300 shrink-0">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </div>
+                </div>
+                <div class="service-content pl-0 sm:pl-20">
+                    <div class="pt-4 space-y-3">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Wireframing</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Visual Identity</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">User-Centric Flow</span>
+                        </div>
+                        <p class="text-sm opacity-80 max-w-2xl leading-relaxed">
+                            Crafting intuitive, visually striking layouts tailored to engage visitors immediately and guide them effortlessly toward action.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service 02 (Active by Default) -->
+            <div class="service-item active bg-white rounded-3xl p-6 sm:p-8 border border-espresso/10 cursor-pointer transition-all duration-300 shadow-lg" onclick="toggleService(this)">
+                <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-6 sm:gap-12">
+                        <span class="service-num font-display font-bold text-base sm:text-lg text-espresso/50 transition-colors">02.</span>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl">Full Website Development</h3>
+                    </div>
+                    <div class="service-arrow w-10 h-10 rounded-full bg-amberGlow/20 text-amberGlow flex items-center justify-center transition-all duration-300 shrink-0">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </div>
+                </div>
+                <div class="service-content pl-0 sm:pl-20">
+                    <div class="pt-4 space-y-3">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Landing Page Design</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Responsive Web Engineering</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Custom Interactive Animations</span>
+                        </div>
+                        <p class="text-sm opacity-80 max-w-2xl leading-relaxed">
+                            Building fast, responsive, and SEO-friendly websites from scratch using modern web technologies focused on seamless usability and business growth.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service 03 -->
+            <div class="service-item bg-white rounded-3xl p-6 sm:p-8 border border-espresso/10 cursor-pointer transition-all duration-300 shadow-sm hover:border-amberGlow/50" onclick="toggleService(this)">
+                <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-6 sm:gap-12">
+                        <span class="service-num font-display font-bold text-base sm:text-lg text-espresso/50 transition-colors">03.</span>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl">Web Application & Dashboard Architecture</h3>
+                    </div>
+                    <div class="service-arrow w-10 h-10 rounded-full bg-amberGlow/20 text-amberGlow flex items-center justify-center transition-all duration-300 shrink-0">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </div>
+                </div>
+                <div class="service-content pl-0 sm:pl-20">
+                    <div class="pt-4 space-y-3">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Admin Panels</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Dynamic Data Views</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">API Integration</span>
+                        </div>
+                        <p class="text-sm opacity-80 max-w-2xl leading-relaxed">
+                            Developing structured, scalable web applications and control panels that streamline complex workflows with zero friction.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service 04 -->
+            <div class="service-item bg-white rounded-3xl p-6 sm:p-8 border border-espresso/10 cursor-pointer transition-all duration-300 shadow-sm hover:border-amberGlow/50" onclick="toggleService(this)">
+                <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-6 sm:gap-12">
+                        <span class="service-num font-display font-bold text-base sm:text-lg text-espresso/50 transition-colors">04.</span>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl">Performance Optimization & Redesign</h3>
+                    </div>
+                    <div class="service-arrow w-10 h-10 rounded-full bg-amberGlow/20 text-amberGlow flex items-center justify-center transition-all duration-300 shrink-0">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </div>
+                </div>
+                <div class="service-content pl-0 sm:pl-20">
+                    <div class="pt-4 space-y-3">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Core Web Vitals</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Mobile Responsiveness</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">Code Refactoring</span>
+                        </div>
+                        <p class="text-sm opacity-80 max-w-2xl leading-relaxed">
+                            Transforming outdated or slow websites into ultra-fast, modern digital experiences across desktop, tablet, and mobile screens.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT ME SECTION (Dark Espresso Block inspired by Reference 1) -->
+    <section id="about" class="bg-espresso text-cream py-20 lg:py-28 relative overflow-hidden">
+        <!-- Subtle Background Accent -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-amberGlow/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Left Visual Card -->
+                <div class="lg:col-span-5 reveal">
+                    <div class="relative mx-auto max-w-sm">
+                        <!-- Offset Amber Backdrop -->
+                        <div class="absolute inset-0 bg-amberGlow rounded-[2.5rem] rotate-3 transform transition-transform hover:rotate-6"></div>
+                        <div class="relative bg-espressoLight border border-amberGlow/30 rounded-[2.5rem] p-8 text-center space-y-6 shadow-2xl">
+                            <div class="w-28 h-28 mx-auto rounded-full bg-gradient-to-tr from-amberGlow to-amber-300 p-1">
+                                <div class="w-full h-full rounded-full bg-espresso flex items-center justify-center font-display font-extrabold text-3xl text-amberGlow">
+                                    AF
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-display font-extrabold text-2xl">Ahmed Fady</h3>
+                                <p class="text-cream/70 text-sm mt-1">Senior Web Developer</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 pt-2">
+                                <div class="bg-espresso/80 rounded-2xl p-4 border border-white/5">
+                                    <div class="font-display font-extrabold text-2xl text-amberGlow counter" data-target="600">0</div>
+                                    <div class="text-xs text-cream/70 mt-1">Happy Clients & Sites</div>
+                                </div>
+                                <div class="bg-espresso/80 rounded-2xl p-4 border border-white/5">
+                                    <div class="font-display font-extrabold text-2xl text-amberGlow">100%</div>
+                                    <div class="text-xs text-cream/70 mt-1">Delivery Commitment</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-5 -left-4 bg-cream text-espresso px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amberGlow/20 text-amberGlow flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div>
+                                <div class="font-display font-extrabold text-base leading-none">600+</div>
+                                <div class="text-xs text-espresso/70 font-medium">Successful Launches</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Bio Content -->
+                <div class="lg:col-span-7 space-y-6 reveal reveal-delay-1">
+                    <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cream/70">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amberGlow"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-cream -ml-1.5"></span>
+                        <span>About Me</span>
+                    </div>
+
+                    <h2 class="font-display font-extrabold text-3xl sm:text-5xl leading-tight">
+                        Who is <span class="text-amberGlow">Ahmed Fady?</span>
+                    </h2>
+
+                    <p class="text-cream/80 text-base sm:text-lg leading-relaxed">
+                        I am a dedicated, results-driven web developer passionate about engineering digital experiences that are clean, functional, and visually captivating. Over my career, I have partnered with <strong class="text-amberGlow font-semibold">more than 600 clients</strong> to build and launch over <strong class="text-amberGlow font-semibold">600 successful websites</strong> across diverse industries.
+                    </p>
+
+                    <p class="text-cream/70 text-sm sm:text-base leading-relaxed">
+                        My approach prioritizes confidentiality, precision, and post-launch peace of mind. Whether you need a sleek starter presence, a full-scale professional business website, or an extra-tier custom platform, every line of code is crafted to perform seamlessly.
+                    </p>
+
+                    <div class="pt-4 flex flex-wrap gap-4">
+                        <a href="#packages" class="bg-cream text-espresso hover:bg-amberGlow hover:text-white font-display font-bold text-sm px-7 py-3.5 rounded-full transition-all duration-300 inline-flex items-center gap-2">
+                            <span>Choose Your Package</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING PACKAGES SECTION (The 3 Requested Tiers: $10, $20, $40) -->
+    <section id="packages" class="py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+            <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-espresso/70 mb-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-espresso"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amberGlow -ml-1.5"></span>
+                <span>Transparent Pricing</span>
+            </div>
+            <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-espresso tracking-tight">
+                Tailored <span class="text-amberGlow">Web Packages</span>
+            </h2>
+            <p class="text-espresso/70 text-sm sm:text-base mt-4">
+                Clear, straightforward pricing with guaranteed revisions and dedicated post-delivery technical support.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+            
+            <!-- PACKAGE 1: $10 Starter Package -->
+            <div class="glow-card bg-white rounded-[2.2rem] p-8 border border-espresso/10 flex flex-col justify-between reveal">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="px-4 py-1.5 rounded-full bg-creamDark text-espresso font-display font-bold text-xs uppercase tracking-wider">Starter Plan</span>
+                        <div class="w-10 h-10 rounded-full bg-amberGlow/15 text-amberGlow flex items-center justify-center">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex items-baseline gap-1 mb-3">
+                        <span class="font-display font-extrabold text-5xl text-espresso">$10</span>
+                        <span class="text-espresso/60 text-sm font-medium">/ website</span>
+                    </div>
+                    <p class="text-espresso/70 text-sm mb-8">
+                        Ideal for a clean, fast, and modern personal or starter website built to specification.
+                    </p>
+
+                    <ul class="space-y-4 text-sm text-espresso/85 border-t border-espresso/10 pt-6">
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-amberGlow/20 text-amberGlow flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span>Custom Website Design & Build</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-amberGlow/20 text-amberGlow flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span><strong>Minimum 5 Revisions</strong> Included</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-amberGlow/20 text-amberGlow flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span><strong>4 Days Support</strong> After Delivery</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-amberGlow/20 text-amberGlow flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span>Mobile & Desktop Responsive</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pt-8 mt-8">
+                    <button onclick="openOrderModal('Starter Package ($10)', 'Custom Website Design • Min. 5 Revisions • 4 Days Post-Delivery Support')" class="w-full py-4 px-6 rounded-full bg-creamDark hover:bg-espresso text-espresso hover:text-cream font-display font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2">
+                        <span>Select Starter Plan</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PACKAGE 2: $20 Professional Package (Featured) -->
+            <div class="glow-card bg-espresso text-cream rounded-[2.2rem] p-8 border-2 border-amberGlow relative flex flex-col justify-between shadow-2xl md:-translate-y-4 reveal reveal-delay-1">
+                <!-- Popular Badge -->
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-amberGlow text-espresso font-display font-extrabold text-xs uppercase tracking-wider px-5 py-1.5 rounded-full shadow-lg">
+                    Most Popular
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-6 mt-2">
+                        <span class="px-4 py-1.5 rounded-full bg-white/10 text-amberGlow font-display font-bold text-xs uppercase tracking-wider">Professional Plan</span>
+                        <div class="w-10 h-10 rounded-full bg-amberGlow text-espresso flex items-center justify-center">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex items-baseline gap-1 mb-3">
+                        <span class="font-display font-extrabold text-5xl text-white">$20</span>
+                        <span class="text-cream/60 text-sm font-medium">/ website</span>
+                    </div>
+                    <p class="text-cream/75 text-sm mb-8">
+                        A complete, high-craft professional website with smooth animations and extended flexibility.
+                    </p>
+
+                    <ul class="space-y-4 text-sm text-cream/90 border-t border-white/10 pt-6">
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-amberGlow text-espresso flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span>Professional Multi-Section Website</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-amberGlow text-espresso flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span><strong class="text-amberGlow">Minimum 10 Revisions</strong> Included</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-amberGlow text-espresso flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span><strong class="text-amberGlow">10 Days Support</strong> After Delivery</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-amberGlow text-espresso flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span>Interactive Animations & SEO Ready</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pt-8 mt-8">
+                    <button onclick="openOrderModal('Professional Package ($20)', 'Professional Website • Min. 10 Revisions • 10 Days Post-Delivery Support')" class="w-full py-4 px-6 rounded-full bg-amberGlow hover:bg-amberHover text-espresso font-display font-extrabold text-sm transition-all duration-300 shadow-lg shadow-amberGlow/25 flex items-center justify-center gap-2">
+                        <span>Select Professional Plan</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PACKAGE 3: $40 Extra Ultimate Package -->
+            <div class="glow-card bg-white rounded-[2.2rem] p-8 border border-espresso/10 flex flex-col justify-between reveal reveal-delay-2">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="px-4 py-1.5 rounded-full bg-amberGlow/15 text-amberHover font-display font-bold text-xs uppercase tracking-wider">Extra Elite Plan</span>
+                        <div class="w-10 h-10 rounded-full bg-espresso text-amberGlow flex items-center justify-center">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex items-baseline gap-1 mb-3">
+                        <span class="font-display font-extrabold text-5xl text-espresso">$40</span>
+                        <span class="text-espresso/60 text-sm font-medium">/ website</span>
+                    </div>
+                    <p class="text-espresso/70 text-sm mb-8">
+                        Our highest-tier Extra website package with maximum customization and long-term care.
+                    </p>
+
+                    <ul class="space-y-4 text-sm text-espresso/85 border-t border-espresso/10 pt-6">
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-espresso text-amberGlow flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span>Premium Extra Website Architecture</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-espresso text-amberGlow flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span><strong>Minimum 20 Revisions</strong> Included</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-espresso text-amberGlow flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span><strong>25 Days Support</strong> After Delivery</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-espresso text-amberGlow flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+                            <span>Priority Delivery & Full Optimization</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pt-8 mt-8">
+                    <button onclick="openOrderModal('Extra Elite Package ($40)', 'Extra Website • Min. 20 Revisions • 25 Days Post-Delivery Support')" class="w-full py-4 px-6 rounded-full bg-espresso hover:bg-amberGlow text-cream hover:text-espresso font-display font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2">
+                        <span>Select Extra Plan</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CRAFTSMANSHIP & CAPABILITIES SECTION (Confidentiality-First: Zero Project Names) -->
+    <section id="standards" class="py-16 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 reveal">
+            <div>
+                <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-espresso/70 mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-espresso"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-amberGlow -ml-1.5"></span>
+                    <span>Proven Track Record</span>
+                </div>
+                <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-espresso tracking-tight">
+                    Why <span class="text-amberGlow">600+ Clients</span> Trust My Code
+                </h2>
+            </div>
+            <p class="text-espresso/70 text-sm max-w-md">
+                Every website is built under strict client privacy—delivering high-impact architecture without exposing private client details.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+            <!-- Card 1 -->
+            <div class="glow-card bg-white rounded-3xl p-6 border border-espresso/10 space-y-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amberGlow to-amber-500 text-espresso flex items-center justify-center text-xl shadow-md">
+                    <i class="fa-solid fa-gauge-high"></i>
+                </div>
+                <h3 class="font-display font-bold text-lg text-espresso">Ultra-Fast Performance</h3>
+                <p class="text-espresso/70 text-sm leading-relaxed">
+                    Lightweight, clean code optimized for instant page loads and high retention across all devices.
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="glow-card bg-white rounded-3xl p-6 border border-espresso/10 space-y-4">
+                <div class="w-12 h-12 rounded-2xl bg-espresso text-amberGlow flex items-center justify-center text-xl shadow-md">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
+                <h3 class="font-display font-bold text-lg text-espresso">100% Fluid Responsive</h3>
+                <p class="text-espresso/70 text-sm leading-relaxed">
+                    Pixel-perfect layouts that adapt effortlessly from wide desktop monitors to mobile screens.
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="glow-card bg-white rounded-3xl p-6 border border-espresso/10 space-y-4">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amberGlow to-amber-500 text-espresso flex items-center justify-center text-xl shadow-md">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="font-display font-bold text-lg text-espresso">Strict Confidentiality</h3>
+                <p class="text-espresso/70 text-sm leading-relaxed">
+                    Your ideas, business logic, and brand identity remain 100% private and exclusively yours.
+                </p>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="glow-card bg-white rounded-3xl p-6 border border-espresso/10 space-y-4">
+                <div class="w-12 h-12 rounded-2xl bg-espresso text-amberGlow flex items-center justify-center text-xl shadow-md">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <h3 class="font-display font-bold text-lg text-espresso">Post-Delivery Support</h3>
+                <p class="text-espresso/70 text-sm leading-relaxed">
+                    Guaranteed revision rounds and up to 25 days of dedicated support after your site goes live.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER CTA BANNER (Inspired by Reference 1 Bottom Section) -->
+    <footer class="bg-espresso text-cream pt-16 pb-10 px-4 sm:px-6 lg:px-8 mt-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-espressoLight border border-amberGlow/20 rounded-[2.5rem] p-8 sm:p-12 lg:p-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 mb-12 reveal">
+                <div class="flex items-start sm:items-center gap-6">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-amberGlow/20 border border-amberGlow/40 text-amberGlow flex items-center justify-center text-2xl shrink-0">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-amberGlow">Let's Work Together</span>
+                        <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl mt-1">
+                            Have a Website <span class="text-amberGlow">in Mind?</span>
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="space-y-4 max-w-md">
+                    <p class="text-cream/75 text-sm sm:text-base">
+                        Join 600+ satisfied clients worldwide. Pick a package that fits your vision and let's start building today.
+                    </p>
+                    <button onclick="openOrderModal('Custom Website Inquiry', 'Select your preferred tier ($10 / $20 / $40) below')" class="bg-cream text-espresso hover:bg-amberGlow hover:text-white font-display font-bold text-sm px-7 py-3.5 rounded-full transition-all duration-300 inline-flex items-center gap-2 shadow-lg">
+                        <span>Get in Touch</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright Bar -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/10 text-xs sm:text-sm text-cream/60">
+                <div class="font-display font-bold text-cream text-lg">
+                    Ahmed<span class="text-amberGlow">.</span>
+                </div>
+                <p>© <span id="year"></span> Ahmed Fady. All Rights Reserved. Ready for GitHub Pages.</p>
+                <div class="flex items-center gap-5">
+                    <a href="#home" class="hover:text-amberGlow transition">Home</a>
+                    <a href="#services" class="hover:text-amberGlow transition">Services</a>
+                    <a href="#packages" class="hover:text-amberGlow transition">Packages</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE ORDER / CONTACT MODAL (No alert() used) -->
+    <div id="order-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-espresso/80 backdrop-blur-sm">
+        <div class="bg-cream text-espresso rounded-[2rem] max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-espresso/15 relative transform transition-all">
+            <button onclick="closeOrderModal()" aria-label="Close Modal" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-creamDark hover:bg-espresso hover:text-cream flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="space-y-2 mb-6">
+                <span class="inline-block px-3 py-1 rounded-full bg-amberGlow/20 text-amberHover font-display font-bold text-xs uppercase tracking-wider">Start Your Website</span>
+                <h3 id="modal-package-title" class="font-display font-extrabold text-2xl sm:text-3xl text-espresso">Professional Package ($20)</h3>
+                <p id="modal-package-desc" class="text-xs sm:text-sm text-espresso/70">Professional Website • Min. 10 Revisions • 10 Days Post-Delivery Support</p>
+            </div>
+
+            <form id="order-form" onsubmit="handleOrderSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-espresso/70 mb-1.5">Your Name</label>
+                    <input type="text" id="client-name" required placeholder="Enter your full name" class="w-full px-4 py-3 rounded-2xl bg-white border border-espresso/15 focus:border-amberGlow focus:outline-none text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-espresso/70 mb-1.5">Select Package</label>
+                    <select id="package-select" class="w-full px-4 py-3 rounded-2xl bg-white border border-espresso/15 focus:border-amberGlow focus:outline-none text-sm font-medium">
+                        <option value="Starter Package ($10) - Min 5 Revisions, 4 Days Support">Starter Package — $10 (Min. 5 Revisions • 4 Days Support)</option>
+                        <option value="Professional Package ($20) - Min 10 Revisions, 10 Days Support">Professional Package — $20 (Min. 10 Revisions • 10 Days Support)</option>
+                        <option value="Extra Elite Package ($40) - Min 20 Revisions, 25 Days Support">Extra Elite Package — $40 (Min. 20 Revisions • 25 Days Support)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-espresso/70 mb-1.5">Website Requirements</label>
+                    <textarea id="client-notes" rows="3" required placeholder="Briefly describe the website you want Ahmed Fady to build..." class="w-full px-4 py-3 rounded-2xl bg-white border border-espresso/15 focus:border-amberGlow focus:outline-none text-sm"></textarea>
+                </div>
+
+                <div id="order-feedback" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs sm:text-sm space-y-2">
+                    <div class="font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                        <span>Order Summary Ready!</span>
+                    </div>
+                    <p>Your request has been formatted and copied to your clipboard so you can send it directly to <strong>Ahmed Fady</strong>.</p>
+                </div>
+
+                <button type="submit" class="w-full py-4 px-6 rounded-full bg-espresso hover:bg-amberGlow text-cream hover:text-espresso font-display font-bold text-sm transition-all duration-300 shadow-lg flex items-center justify-center gap-2">
+                    <span>Confirm & Copy Order Details</span>
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Animations, Counters, Accordion & Modal -->
+    <script>
+        // Set Current Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Navigation Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Interactive Services Accordion
+        function toggleService(selectedItem) {
+            const allItems = document.querySelectorAll('.service-item');
+            const isAlreadyActive = selectedItem.classList.contains('active');
+            
+            allItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (!isAlreadyActive) {
+                selectedItem.classList.add('active');
+            }
+        }
+
+        // Scroll Reveal Observer & Animated Counter
+        const revealElements = document.querySelectorAll('.reveal');
+        const counters = document.querySelectorAll('.counter');
+        let countersStarted = false;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Trigger 600+ counter animation when visible
+                    if (!countersStarted && entry.target.querySelector('.counter')) {
+                        countersStarted = true;
+                        counters.forEach(counter => {
+                            const target = +counter.getAttribute('data-target');
+                            const duration = 1800;
+                            const stepTime = Math.max(Math.floor(duration / target), 10);
+                            let current = 0;
+                            const timer = setInterval(() => {
+                                current += 12;
+                                if (current >= target) {
+                                    counter.textContent = target + '+';
+                                    clearInterval(timer);
+                                } else {
+                                    counter.textContent = current + '+';
+                                }
+                            }, stepTime);
+                        });
+                    }
+                }
+            });
+        }, { threshold: 0.12 });
+
+        revealElements.forEach(el => observer.observe(el));
+
+        // Order Modal Logic
+        const modal = document.getElementById('order-modal');
+        const modalTitle = document.getElementById('modal-package-title');
+        const modalDesc = document.getElementById('modal-package-desc');
+        const packageSelect = document.getElementById('package-select');
+        const orderFeedback = document.getElementById('order-feedback');
+
+        function openOrderModal(title, desc) {
+            modalTitle.textContent = title;
+            modalDesc.textContent = desc;
+            orderFeedback.classList.add('hidden');
+
+            if (title.includes('$10')) {
+                packageSelect.selectedIndex = 0;
+            } else if (title.includes('$20')) {
+                packageSelect.selectedIndex = 1;
+            } else if (title.includes('$40')) {
+                packageSelect.selectedIndex = 2;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeOrderModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeOrderModal();
+            }
+        });
+
+        // Handle Order Form Submission & Copy to Clipboard
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('client-name').value.trim();
+            const pkg = packageSelect.value;
+            const notes = document.getElementById('client-notes').value.trim();
+
+            const summaryText = `Hello Ahmed Fady,\nI would like to order a website:\n• Client Name: ${name}\n• Selected Package: ${pkg}\n• Project Details: ${notes}`;
+
+            // Copy to clipboard using execCommand for full compatibility
+            const tempInput = document.createElement('textarea');
+            tempInput.value = summaryText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                // Fallback handled silently
+            }
+            document.body.removeChild(tempInput);
+
+            orderFeedback.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
